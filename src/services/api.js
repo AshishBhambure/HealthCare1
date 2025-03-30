@@ -13,6 +13,17 @@ const apiClient = axios.create({
 
 // Disease related API calls
 export const diseaseService = {
+    
+    getPatientDiseaseById: async (patient_id) => {
+        try{
+
+            const response = await axios.post(`${API_BASE_URL}/getDiseasesForPatient/${patient_id}`)
+            return response.data;
+        }
+        catch(e){
+            console.log(e)
+        }
+    },
 
     getPatientInfo: async (mobileNo) => {
         try {
@@ -116,10 +127,21 @@ export const loginSignUpService = {
             console.log(" Loggiung Response:: ", response.data);
             localStorage.setItem("token",response?.data?.token);
             localStorage.setItem("user", JSON.stringify(response?.data?.user));
+            
 
             if(response?.data?.user?.role === 'doctor'){
                 navigate('/doctor')
             }
+            if(response?.data?.user?.role === 'clerk'){
+                navigate('/clerk')
+            }
+
+            if(response?.data?.user?.role === 'patient'){
+                navigate('/patient')
+            }
+            window.location.reload();
+
+            
 
 
 

@@ -4,64 +4,150 @@ import UpdateInfo from './UpdateInfo';
 const HospitalsInfo = ({ datas }) => {
   const [update, setUpdate] = useState(false);
 
-  console.log("datas", datas);
+  // Color scheme
+  const colors = {
+    primary: '#4c5270',    // Cornflower
+    secondary: '#f652a0',  // Hot Pink
+    accent: '#36eee0',     // Cyan
+    light: '#bcece0',      // Tiffany Blue
+    text: {
+      dark: '#2d3748',
+      medium: '#4a5568',
+      light: '#718096'
+    },
+    white: '#ffffff'
+  };
+
+  if (!datas) {
+    return (
+      <div className="rounded-lg p-8 text-center" style={{ backgroundColor: colors.light }}>
+        <p className="text-lg font-medium" style={{ color: colors.primary }}>Loading hospital information...</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="bg-white shadow-lg rounded-lg p-6">
-      <button 
-        onClick={() => setUpdate(!update)} 
-        className="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-700"
-      >
-        {update ? "View Hospital Info" : "Update"}
-      </button>
-      
+    <div className="rounded-xl overflow-hidden shadow-xl">
+      {/* Header with hospital name and update button */}
+      <div className="p-6 flex justify-between items-center" style={{ backgroundColor: colors.primary }}>
+        <h2 className="text-2xl font-bold text-white">{datas?.name || 'Hospital Information'}</h2>
+        <button 
+          onClick={() => setUpdate(!update)} 
+          className="px-5 py-2 rounded-full font-medium transition-all duration-200 shadow-md hover:shadow-lg" 
+          style={{ 
+            backgroundColor: update ? colors.light : colors.secondary,
+            color: update ? colors.primary : colors.white
+          }}
+        >
+          {update ? "View Details" : "Update Info"}
+        </button>
+      </div>
+
       {update ? (
-        <UpdateInfo datas={datas} setUpdate={setUpdate} />
+        <div className="p-6">
+          <UpdateInfo datas={datas} setUpdate={setUpdate} />
+        </div>
       ) : (
-        <>
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">{datas?.name}</h2>
-            <p className="text-gray-600">License No: {datas?.license_no}</p>
-            <p className="text-gray-600">Owner: {datas?.owner_name}</p>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4 mb-6">
-            <div>
-              <h3 className="font-semibold text-gray-700">Contact Info</h3>
-              <p className="text-gray-600">Address: {datas?.address}</p>
-              {datas?.contact_numbers?.map((number, index) => (
-                <p key={index} className="text-gray-600">Phone: {number}</p>
-              ))}
+        <div className="divide-y" style={{ borderColor: colors.light }}>
+          {/* License and owner info card */}
+          <div className="p-6 flex items-center gap-4">
+            <div className="flex-1">
+              <div className="inline-block px-3 py-1 mb-2 rounded-full text-sm font-medium" style={{ backgroundColor: colors.light, color: colors.primary }}>
+                License No: {datas?.license_no}
+              </div>
+              <h3 className="text-xl font-semibold" style={{ color: colors.text.dark }}>
+                Owned by {datas?.owner_name}
+              </h3>
+              <p className="mt-1" style={{ color: colors.text.medium }}>
+                {datas?.type} • {datas?.owned_by}
+              </p>
             </div>
-            
-            <div>
-              <h3 className="font-semibold text-gray-700">Working Hours</h3>
-              <p className="text-gray-600">{datas?.working_hours}</p>
-              <p className="text-gray-600">Days: {datas?.working_days.join(', ')}</p>
+            <div className="h-16 w-16 rounded-full flex items-center justify-center" style={{ backgroundColor: colors.accent }}>
+              <span className="text-2xl font-bold" style={{ color: colors.primary }}>
+                {datas?.beds}
+              </span>
             </div>
           </div>
 
-          <div className="mb-6">
-            <h3 className="font-semibold text-gray-700">Hospital Details</h3>
-            <p className="text-gray-600">Type: {datas?.type}</p>
-            <p className="text-gray-600">Ownership: {datas?.owned_by}</p>
-            <p className="text-gray-600">Total Beds: {datas?.beds}</p>
-            <p className="text-gray-600">Specialities: {datas?.speciality.join(', ')}</p>
+          {/* Contact and working hours */}
+          <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="rounded-lg p-4" style={{ backgroundColor: colors.light }}>
+              <h3 className="text-lg font-semibold mb-3" style={{ color: colors.primary }}>
+                Contact Information
+              </h3>
+              <div className="space-y-2">
+                <div className="flex items-start">
+                  <span className="inline-block w-24 font-medium" style={{ color: colors.secondary }}>Address:</span>
+                  <span style={{ color: colors.text.medium }}>{datas?.address}</span>
+                </div>
+                {datas?.contact_numbers?.map((number, index) => (
+                  <div key={index} className="flex items-center">
+                    <span className="inline-block w-24 font-medium" style={{ color: colors.secondary }}>Phone {index + 1}:</span>
+                    <span style={{ color: colors.text.medium }}>{number}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="rounded-lg p-4" style={{ backgroundColor: colors.light }}>
+              <h3 className="text-lg font-semibold mb-3" style={{ color: colors.primary }}>
+                Working Hours
+              </h3>
+              <div className="space-y-2">
+                <div className="flex items-start">
+                  <span className="inline-block w-24 font-medium" style={{ color: colors.secondary }}>Hours:</span>
+                  <span style={{ color: colors.text.medium }}>{datas?.working_hours}</span>
+                </div>
+                <div className="flex items-start">
+                  <span className="inline-block w-24 font-medium" style={{ color: colors.secondary }}>Days:</span>
+                  <span style={{ color: colors.text.medium }}>{datas?.working_days?.join(', ')}</span>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {datas?.photo && (
-            <div className="grid grid-cols-3 gap-4">
-              {datas?.photo?.map((img, index) => (
-                <img 
-                  key={index}
-                  src={img}
-                  alt={`Hospital ${index + 1}`}
-                  className="w-full h-32 object-cover rounded"
-                />
+          {/* Specialties */}
+          <div className="p-6">
+            <h3 className="text-lg font-semibold mb-3" style={{ color: colors.primary }}>Specialities</h3>
+            <div className="flex flex-wrap gap-2">
+              {datas?.speciality?.map((specialty, index) => (
+                <span 
+                  key={index} 
+                  className="px-3 py-1 rounded-full text-sm" 
+                  style={{ 
+                    backgroundColor: index % 2 === 0 ? colors.secondary : colors.accent,
+                    color: index % 2 === 0 ? colors.white : colors.primary
+                  }}
+                >
+                  {specialty}
+                </span>
               ))}
+            </div>
+          </div>
+
+          {/* Hospital photos */}
+          {datas?.photo && datas.photo.length > 0 && (
+            <div className="p-6">
+              <h3 className="text-lg font-semibold mb-3" style={{ color: colors.primary }}>
+                Hospital Gallery
+              </h3>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {datas.photo.map((img, index) => (
+                  <div 
+                    key={index} 
+                    className="aspect-w-4 aspect-h-3 rounded-lg overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
+                  >
+                    <img 
+                      src={img}
+                      alt={`Hospital ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );

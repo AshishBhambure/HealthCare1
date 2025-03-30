@@ -120,4 +120,28 @@ module.exports.deleteDisease = async (req, res) => {
     }
 };
 
+module.exports.getDiseasesForPatient = async (req, res) => {
+    try {
+        const { patient_id } = req.params;
+        const diseases = await Disease.find({ patient_id })
+            .populate('patient_id', 'name mobileNo')
+            .populate('doctor_id', 'name specialization hospital')
+            .populate('clerk_id', 'name mobileNo')
+            .populate({
+                path: 'doctor_id',
+                populate: { path: 'hospital', select: 'name address' }
+            })
+            .exec();
+
+        if (!diseases.length) {
+            return res.status(404).json({ message: "No diseases found for this patient", success: false });
+        }
+
+        res.status(200).json({ diseases, success: true });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching diseases", error: error.message });
+    }
+};
+
+
 

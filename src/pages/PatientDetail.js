@@ -5,8 +5,10 @@ import Input from "../components/common/input";
 import Button from "../components/common/Button";
 import { diseaseService } from "../services/api";
 import PatientInfo from "../components/PatientInfo/PatientInfo";
+import { useAppContext } from "../context/AppContext";
 
 const PatientDetail = () => {
+  const {user} = useAppContext();
   const [mobileNo, setMobileNo] = useState("");
   const [searchMobile, setSearchMobile] = useState("");
   const [diseases, setDiseases] = useState([]);
@@ -14,6 +16,7 @@ const PatientDetail = () => {
   const [error, setError] = useState("");
   const [editingDisease, setEditingDisease] = useState(null);
   const [patient,setPatient] = useState();
+ 
 
  
   const fetchPatientDiseases = async() => {

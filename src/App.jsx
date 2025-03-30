@@ -9,7 +9,12 @@ import { useAppContext } from './context/AppContext';
 import DoctorPage from './pages/DoctorPage';
 import Footer from './pages/Footer';
 import Navbar from './pages/Navbar';
-// import Body from './pages/Body';
+import ClerkPage from './pages/ClerkPage';
+import PatirentPage from './pages/PatirentPage';
+ import Body from './pages/Body';
+import ShowHospital from './pages/showHospital';
+import PatientHistory from './components/patient/PatientHistory';
+
 
 // Create a separate component that will use navigation hooks
 function AppRoutes() {
@@ -44,9 +49,13 @@ function AppRoutes() {
           <Route path="/signup" element={<SignUpPage />} />
           <Route path="/hospital" element={<HospitalPage />} />
           <Route path='/doctor' element= {<DoctorPage/>}></Route>
-           <Route path='/' element = {<div> Home Page</div>}></Route>
-          {/* <Route path="/" element={<Body/>} ></Route>  */}
-        
+          <Route path='/clerk' element= {<ClerkPage/>}></Route>
+          <Route path='/patient' element={<PatirentPage/>}></Route>
+           {/* <Route path='/' element = {<div> Home Page</div>}></Route> */}
+          <Route path="/" element={<Body/>} ></Route> 
+          <Route path="/showHospitals" element={<ShowHospital></ShowHospital>}/>
+          <Route path='/patient-history' element={<PatientHistory  />}></Route>
+
         </Routes>
       </main>
       <Footer/>

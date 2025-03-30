@@ -2,15 +2,18 @@ const express = require("express");
 // const hospitalLogin = require("../controllers/auth")
 const { appAdminPatientLogin, hospitalLogin, appAdminPatientSignup, hospitalSignup, login, signUp, registerClerk, registerDoctor } = require("../controllers/auth");
 const { updateDoctorProfile,updateHospitalProfile, updatePatientProfile} = require("../controllers/updateProfiles");
-const { addDisease, updateDisease, deleteDisease } = require("../controllers/Disease");
+const { addDisease, updateDisease, deleteDisease, getDiseasesForPatient } = require("../controllers/Disease");
 const {getAllClerksDoctorsPatientsOfHospital, deleteDoctor, deleteClerk, getAllDoctorsHospital}  = require("../controllers/Hospitals");
 const { getPatientDetailsByMobile } = require("../controllers/Patient");
 // const {registerClerk} = require("../controllers/auth")
 const {getDoctorDetails} = require("../controllers/getDoctorById");
+const getAllHospitals = require("../controllers/getAllHospital");
 
 
 const router = express.Router();
 
+
+router.post('/getDiseasesForPatient/:patient_id',getDiseasesForPatient)
 
 
 // Hospital Login Route
@@ -47,5 +50,8 @@ router.post('/deleteClerk',deleteClerk);
 //getdoctorbyid
 router.post('/getDoctorDetails',getDoctorDetails);
 router.post('/getAllDoctorsHospital/:hospitalId',getAllDoctorsHospital);
+
+
+router.get('/getAllHospitals', getAllHospitals);
 
 module.exports = router;

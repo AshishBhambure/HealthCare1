@@ -10,15 +10,8 @@ const AccountAccess = () => {
 
     useEffect(() => {
         const hospital = JSON.parse(localStorage.getItem('user'));
-        console.log("Hospital ",hospital);
-        setHospitalId(hospital._id)
-        // const storedHospitalId = localStorage.getItem("hospitalId");
-        // if (storedHospitalId) {
-        //     setHospitalId(hospital._id);
-        //     // fetchHospitalDetails(storedHospitalId);
-        // } else {
-        //     alert("No hospital ID found. Please login again.");
-        // }
+        console.log("Hospital ", hospital);
+        setHospitalId(hospital._id);
     }, []);
 
     const fetchHospitalDetails = async (id) => {
@@ -61,7 +54,6 @@ const AccountAccess = () => {
             await axios.post(apiUrl, trimmedData, { headers: { "Content-Type": "application/json" } });
             alert(`${userType} registered successfully!`);
             setFormData({ name: "", mobileNo: "", password: "", specialization: "" });
-            // fetchHospitalDetails(hospitalId); 
         } catch (error) {
             console.error("Registration Error:", error);
             alert(`Registration failed! ${error.response?.data?.message || "Server error"}`);
@@ -69,67 +61,161 @@ const AccountAccess = () => {
     };
 
     return (
-        <div className="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md mt-6">
-            <h2 className="text-2xl font-bold mb-4">Register {userType}</h2>
+        <div className="max-w-4xl mx-auto p-6 rounded-lg shadow-lg mt-6" style={{ backgroundColor: 'white' }}>
+            <h2 className="text-3xl font-bold mb-6 text-center" style={{ color: '#4c5270' }}>
+                Register New {userType.charAt(0).toUpperCase() + userType.slice(1)}
+            </h2>
 
-            <select value={userType} onChange={(e) => setUserType(e.target.value)} className="w-full p-2 mb-4 border rounded">
-                <option value="clerk">Clerk</option>
-                <option value="doctor">Doctor</option>
-            </select>
+            <div className="mb-6 bg-white p-4 rounded-lg shadow-md" style={{ borderLeft: '4px solid #36eee0' }}>
+                <select 
+                    value={userType} 
+                    onChange={(e) => setUserType(e.target.value)} 
+                    className="w-full p-3 border rounded-md"
+                    style={{ borderColor: '#bcece0', outline: 'none', color: '#4c5270' }}
+                >
+                    <option value="clerk">Clerk</option>
+                    <option value="doctor">Doctor</option>
+                </select>
+            </div>
 
-            <form onSubmit={handleRegister}>
-                <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} className="w-full p-2 mb-3 border rounded" required />
-                <input type="text" name="mobileNo" placeholder="Mobile Number" value={formData.mobileNo} onChange={handleChange} className="w-full p-2 mb-3 border rounded" required />
-                <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} className="w-full p-2 mb-3 border rounded" required />
+            <form onSubmit={handleRegister} className="bg-white p-6 rounded-lg shadow-md mb-8" style={{ borderTop: '4px solid #36eee0' }}>
+                <div className="space-y-4">
+                    <div>
+                        <label className="block mb-1 font-medium" style={{ color: '#4c5270' }}>Full Name</label>
+                        <input 
+                            type="text" 
+                            name="name" 
+                            placeholder="Enter full name" 
+                            value={formData.name} 
+                            onChange={handleChange} 
+                            className="w-full p-3 border rounded-md" 
+                            style={{ borderColor: '#bcece0', outline: 'none' }}
+                            required 
+                        />
+                    </div>
+                    
+                    <div>
+                        <label className="block mb-1 font-medium" style={{ color: '#4c5270' }}>Mobile Number</label>
+                        <input 
+                            type="text" 
+                            name="mobileNo" 
+                            placeholder="Enter mobile number" 
+                            value={formData.mobileNo} 
+                            onChange={handleChange} 
+                            className="w-full p-3 border rounded-md" 
+                            style={{ borderColor: '#bcece0', outline: 'none' }}
+                            required 
+                        />
+                    </div>
+                    
+                    <div>
+                        <label className="block mb-1 font-medium" style={{ color: '#4c5270' }}>Password</label>
+                        <input 
+                            type="password" 
+                            name="password" 
+                            placeholder="Enter password" 
+                            value={formData.password} 
+                            onChange={handleChange} 
+                            className="w-full p-3 border rounded-md" 
+                            style={{ borderColor: '#bcece0', outline: 'none' }}
+                            required 
+                        />
+                    </div>
 
-                {userType === "doctor" && (
-                    <input type="text" name="specialization" placeholder="Specialization" value={formData.specialization} onChange={handleChange} className="w-full p-2 mb-3 border rounded" required />
-                )}
+                    {userType === "doctor" && (
+                        <div>
+                            <label className="block mb-1 font-medium" style={{ color: '#4c5270' }}>Specialization</label>
+                            <input 
+                                type="text" 
+                                name="specialization" 
+                                placeholder="Enter specialization" 
+                                value={formData.specialization} 
+                                onChange={handleChange} 
+                                className="w-full p-3 border rounded-md" 
+                                style={{ borderColor: '#bcece0', outline: 'none' }}
+                                required 
+                            />
+                        </div>
+                    )}
 
-                <button type="submit" className="bg-blue-500 text-white w-full p-2 rounded hover:bg-blue-600">
-                    Register {userType}
-                </button>
+                    <button 
+                        type="submit" 
+                        className="w-full p-3 mt-4 rounded-md text-white font-medium transition-colors"
+                        style={{ backgroundColor: '#f652a0', cursor: 'pointer' }}
+                    >
+                        Register {userType.charAt(0).toUpperCase() + userType.slice(1)}
+                    </button>
+                </div>
             </form>
 
             {hospitalData && (
-                <div className="mt-6">
-                    <h3 className="text-xl font-semibold mb-3">Hospital Details</h3>
-                    <p><strong>Name:</strong> {hospitalData.name}</p>
-                    <p><strong>Owner:</strong> {hospitalData.owner_name}</p>
-                    <p><strong>License No:</strong> {hospitalData.license_no}</p>
+                <div className="bg-white p-6 rounded-lg shadow-md" style={{ borderTop: '4px solid #bcece0' }}>
+                    <h3 className="text-xl font-bold mb-4" style={{ color: '#4c5270' }}>Hospital Details</h3>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 p-4 rounded-lg" style={{ backgroundColor: '#bcece0' }}>
+                        <div>
+                            <span className="block font-semibold" style={{ color: '#4c5270' }}>Name</span>
+                            <span>{hospitalData.name}</span>
+                        </div>
+                        <div>
+                            <span className="block font-semibold" style={{ color: '#4c5270' }}>Owner</span>
+                            <span>{hospitalData.owner_name}</span>
+                        </div>
+                        <div>
+                            <span className="block font-semibold" style={{ color: '#4c5270' }}>License No</span>
+                            <span>{hospitalData.license_no}</span>
+                        </div>
+                    </div>
 
-                    <h3 className="text-lg font-semibold mt-4">Doctors</h3>
-                    {hospitalData.doctors.length > 0 ? (
-                        <ul className="list-disc pl-5">
-                            {hospitalData.doctors.map((doctor) => (
-                                <li key={doctor._id}>{doctor.name} ({doctor.specialization})</li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p>No doctors registered yet.</p>
-                    )}
+                    <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div className="p-4 rounded-lg shadow-md" style={{ backgroundColor: '#36eee0' }}>
+                            <h3 className="text-lg font-bold mb-3" style={{ color: '#4c5270' }}>Doctors</h3>
+                            <div className="bg-white p-3 rounded-lg max-h-64 overflow-y-auto">
+                                {hospitalData.doctors.length > 0 ? (
+                                    <ul className="divide-y">
+                                        {hospitalData.doctors.map((doctor) => (
+                                            <li key={doctor._id} className="py-2">
+                                                <span className="font-medium">{doctor.name}</span>
+                                                <span className="block text-sm mt-1">{doctor.specialization}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <p className="text-center p-4">No doctors registered yet.</p>
+                                )}
+                            </div>
+                        </div>
 
-                    <h3 className="text-lg font-semibold mt-4">Clerks</h3>
-                    {hospitalData.clerks.length > 0 ? (
-                        <ul className="list-disc pl-5">
-                            {hospitalData.clerks.map((clerk) => (
-                                <li key={clerk._id}>{clerk.name}</li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p>No clerks registered yet.</p>
-                    )}
+                        <div className="p-4 rounded-lg shadow-md" style={{ backgroundColor: '#36eee0' }}>
+                            <h3 className="text-lg font-bold mb-3" style={{ color: '#4c5270' }}>Clerks</h3>
+                            <div className="bg-white p-3 rounded-lg max-h-64 overflow-y-auto">
+                                {hospitalData.clerks.length > 0 ? (
+                                    <ul className="divide-y">
+                                        {hospitalData.clerks.map((clerk) => (
+                                            <li key={clerk._id} className="py-2">{clerk.name}</li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <p className="text-center p-4">No clerks registered yet.</p>
+                                )}
+                            </div>
+                        </div>
 
-                    <h3 className="text-lg font-semibold mt-4">Patients</h3>
-                    {hospitalData.patients.length > 0 ? (
-                        <ul className="list-disc pl-5">
-                            {hospitalData.patients.map((patient) => (
-                                <li key={patient._id}>{patient.name}</li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p>No patients found.</p>
-                    )}
+                        <div className="p-4 rounded-lg shadow-md" style={{ backgroundColor: '#36eee0' }}>
+                            <h3 className="text-lg font-bold mb-3" style={{ color: '#4c5270' }}>Patients</h3>
+                            <div className="bg-white p-3 rounded-lg max-h-64 overflow-y-auto">
+                                {hospitalData.patients.length > 0 ? (
+                                    <ul className="divide-y">
+                                        {hospitalData.patients.map((patient) => (
+                                            <li key={patient._id} className="py-2">{patient.name}</li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <p className="text-center p-4">No patients found.</p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )}
         </div>
