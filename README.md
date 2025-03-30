@@ -46,10 +46,7 @@ Swasthya integrates cutting-edge technology to create a unified healthcare manag
 - Python (TensorFlow, Scikit-learn) for predictive analytics and disease tracking.
 
 ### **Chatbot Framework:**
-- Rasa / DialogFlow for AI-powered chatbot integration.
-
-### **Cloud Infrastructure:**
-- AWS / Azure for scalable deployment.
+- Integrate BlueBrick engage bot
 
 ---
 
@@ -113,14 +110,11 @@ Swasthya integrates cutting-edge technology to create a unified healthcare manag
 
 ## 🤝 Contributors
 - **Team Sankalp**
-  - Subodh Kangale (Team Leader)
-  - [Other team members]
+  - Subodh Kangale 
+  - Ashish Bhmabure
+  - Deepak Vishwakarma
+  - Shiivamsingh Yadav
 
----
-
-## 📞 Contact
-For inquiries and collaborations, contact: 
-📧 Email: team.sankalp@swasthya.com
 
 ---
 
